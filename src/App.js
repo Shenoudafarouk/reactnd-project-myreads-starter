@@ -51,8 +51,10 @@ class BooksApp extends Component{
     return (    
      <BrowserRouter>
       <Switch>
+
        <Route exact path='/' render={this.MainPage}  />     
        <Route exact path='/Search' render={this.Search} /> 
+       
       </Switch>       
      </BrowserRouter>
     )

@@ -1,12 +1,10 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import ListBook from './ListBook'
 
-class ShowBooks extends Component {
+function ShowBooks (props) {
   
-  
-  render() {
-    const { books, title, shelf } = this.props;
+    const { books, title, shelf } = props;
     return (
       <div>
         <div className="list-books-content">
@@ -18,7 +16,7 @@ class ShowBooks extends Component {
                   {books
                     .filter((book) => book.shelf === shelf)
                     .map((book) => (
-                      <ListBook key={book.id} book={book} updateShelf={this.props.updateShelf} />
+                      <ListBook key={book.id} book={book} updateShelf={props.updateShelf} />
                      ))}
                 </ol>
               </div>
@@ -27,7 +25,7 @@ class ShowBooks extends Component {
         </div>
       </div>
     );
-  }
+  
 }
 
 export default ShowBooks;

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-
 class ListBook extends Component {
   state = {
     shelf: "",
@@ -22,6 +21,8 @@ class ListBook extends Component {
         <li key={book.id}>
           <div className="book">
             <div className="book-top">
+
+
               <div
                 className="book-cover"
                 style={{
@@ -32,15 +33,17 @@ class ListBook extends Component {
                   })`,
                 }}
               ></div>
+
+
               <div className="book-shelf-changer">
+
                 <select value={book.shelf} onChange={this.handleChange}>
-                  <option value="move" disabled>
-                    Move to...
-                  </option>
+                  <option value="move" disabled>    Move to...  </option>
                   <option value="currentlyReading">Currently Reading</option>
                   <option value="wantToRead">Want to Read</option>
                   <option value="read">Read</option>
                   <option value="none">None</option>
+
                 </select>
               </div>
             </div>

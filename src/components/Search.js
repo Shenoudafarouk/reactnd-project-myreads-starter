@@ -1,10 +1,12 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import ListBook from "./ListBook";
 import { Link } from "react-router-dom";
 import * as BooksAPI from "../BooksAPI";
-import ListBook from "./ListBook";
-import PropTypes from "prop-types";
 
 class Search extends Component {
+
+
   state = {
     query: "",
     searchBooks: [],
@@ -18,6 +20,8 @@ class Search extends Component {
     }));
     this.props.updateShelf(mybook, myshelf);
   };
+
+
 
   updateQuery = (query) => {
     this.setState({ query });
@@ -51,9 +55,7 @@ class Search extends Component {
       <div>
         <div className="search-books">
           <div className="search-books-bar">
-            <Link to="/" className="close-search">
-              Close
-            </Link>
+            <Link to="/" className="close-search">  Close  </Link>
             <div className="search-books-input-wrapper">
               <input
                 type="text"
