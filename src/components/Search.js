@@ -5,49 +5,35 @@ import { Link } from "react-router-dom";
 import * as BooksAPI from "../BooksAPI";
 
 class Search extends Component {
-
-
   state = {
     query: "",
-    searchBooks: [],
+    matchedBooks: [],
   };
-
-  updateShelf = (mybook, myshelf) => {
-    this.setState(({ searchBooks }) => ({
-      searchBooks: searchBooks.map((book) =>
-        book.id === mybook.id ? { ...book, shelf: myshelf } : book
-      ),
-    }));
-    this.props.updateShelf(mybook, myshelf);
-  };
-
-
 
   updateQuery = (query) => {
-    this.setState({ query });
-    if (query.length === 0) {
-      this.setState({ searchBooks: [] });
-    } else if (query.trim()) {
-      BooksAPI.search(query.trim()).then((response) => {
-        if (response.error !== "empty query") {
-          const searchedBooks = response.map((book) => {
-            const mybook = this.props.books.find(
-              (shelfbook) => shelfbook.id === book.id
-            );
-            const shelf = mybook ? mybook.shelf : "none";
-            this.updateShelf(book, shelf);
-            return book;
-          });
+    let trimmedQuery = query.trim();
+    this.setState({
+      query: trimmedQuery,
+    });
 
-          this.setState(() => ({ searchBooks: [...searchedBooks] }));
+    this.fetchMatchedBooks(query);
+  };
+
+  fetchMatchedBooks = (query) => {
+    if (query.length !== 0) {
+      BooksAPI.search(query).then((matchedBooks) => {
+        if (matchedBooks.error) {
+          this.setState({ matchedBooks: [] });
         } else {
-          this.setState(() => ({
-            searchBooks: [],
-          }));
+          this.setState({ matchedBooks: matchedBooks });
+          // console.log(matchedBooks);
         }
       });
+    } else {
+      this.setState({ matchedBooks: [] });
     }
   };
+
   render() {
     const { query } = this.state;
 
@@ -55,7 +41,10 @@ class Search extends Component {
       <div>
         <div className="search-books">
           <div className="search-books-bar">
-            <Link to="/" className="close-search">  Close  </Link>
+            <Link to="/" className="close-search">
+              {" "}
+              Close{" "}
+            </Link>
             <div className="search-books-input-wrapper">
               <input
                 type="text"
@@ -69,13 +58,26 @@ class Search extends Component {
 
           <div className="search-books-results">
             <ol className="books-grid">
-              {this.state.searchBooks.map((book) => (
-                <ListBook
-                  key={book.id}
-                  book={book}
-                  updateShelf={this.updateShelf}
-                />
-              ))}
+              {this.state.matchedBooks.map((matchedBook) => {
+                let shelf = "none";
+
+                this.props.books.forEach((book) => {
+                  if (book.id !== matchedBook.id) {
+                    matchedBook.shelf = "none";
+                  } else {
+                    shelf = book.shelf;
+                  }
+                });
+
+                return (
+                  <ListBook
+                    key={matchedBook.id}
+                    book={matchedBook}
+                    updateShelf={this.props.updateShelf}
+                    currentShelf={shelf}
+                  />
+                );
+              })}
             </ol>
           </div>
         </div>

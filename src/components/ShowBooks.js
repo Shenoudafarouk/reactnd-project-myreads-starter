@@ -16,7 +16,7 @@ function ShowBooks (props) {
                   {books
                     .filter((book) => book.shelf === shelf)
                     .map((book) => (
-                      <ListBook key={book.id} book={book} updateShelf={props.updateShelf} />
+                      <ListBook key={book.id} book={book} currentShelf={shelf} updateShelf={props.updateShelf} />
                      ))}
                 </ol>
               </div>
